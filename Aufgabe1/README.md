@@ -1,4 +1,4 @@
-# 1. Aufgabe - Web App strukturieren und gestalten
++# 1. Aufgabe - Web App strukturieren und gestalten
 
 In der ersten Aufgabe soll die **Web-Oberfläche** der GT-App entstehen. Dazu gehört
 ein **HTML-Dokument** zur Strukturierung der Inhalte und ein **CSS-Stylesheet**

@@ -120,6 +120,7 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
         readme: "Dieses Objekt enthält 'öffentliche' Teile des Moduls.",
 
         updateLocation: function() {
+            if
             // TODO Hier Inhalt der Funktion "update" ergänzen
         }
 
