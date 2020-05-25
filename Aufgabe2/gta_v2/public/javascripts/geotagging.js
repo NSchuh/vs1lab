@@ -120,20 +120,16 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
         readme: "Dieses Objekt enthält 'öffentliche' Teile des Moduls.",
 
         updateLocation: function() {
-            // TODO Hier Inhalt der Funktion "update" ergänzen
-
             tryLocate(
                 function (position) {
                     const lat = getLatitude(position);
                     const long = getLongitude(position);
-                    document.getElementById("latitudeTag").placeholder = lat;
-                    document.getElementById("longitudeTag").placeholder = long;
-                    document.getElementById("latitudeDisc").placeholder = lat;
-                    document.getElementById("longitudeDisc").placeholder = long;
+                    document.getElementById("latitudeTag").value = lat;
+                    document.getElementById("longitudeTag").value = long;
+                    document.getElementById("latitudeDisc").value = lat;
+                    document.getElementById("longitudeDisc").value = long;
 
-                    const imgUrl = getLocationMapSrc(lat, long);
-                    document.getElementById("result-img").src = imgUrl;
-
+                    document.getElementById("result-img").src = getLocationMapSrc(lat, long);
 
                 }, function() {
                      alert("No location found");
@@ -149,7 +145,5 @@ var gtaLocator = (function GtaLocator(geoLocationApi) {
  * des Skripts.
  */
 $(function() {
-    // alert("Please change the script 'geotagging.js'");
-    // TODO Hier den Aufruf für updateLocation einfügen
     gtaLocator.updateLocation();
 });
