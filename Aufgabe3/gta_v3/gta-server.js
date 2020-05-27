@@ -29,14 +29,21 @@ app.set('view engine', 'ejs');
  * Teste das Ergebnis im Browser unter 'http://localhost:3000/'.
  */
 
-// TODO: CODE ERGÄNZEN
+// DONE: CODE ERGÄNZEN
+app.use("/", express.static("public"));
 
 /**
  * Konstruktor für GeoTag Objekte.
  * GeoTag Objekte sollen min. alle Felder des 'tag-form' Formulars aufnehmen.
  */
 
-// TODO: CODE ERGÄNZEN
+// DONE: CODE ERGÄNZEN
+function GeoTag(locationTag, latitudeTag, longitudeTag, hashtag) {
+    this.name = locationTag;
+    this.latitude = latitudeTag;
+    this.longitude = longitudeTag;
+    this.hashtag = hashtag;
+}
 
 /**
  * Modul für 'In-Memory'-Speicherung von GeoTags mit folgenden Komponenten:
@@ -48,6 +55,50 @@ app.set('view engine', 'ejs');
  */
 
 // TODO: CODE ERGÄNZEN
+/*
+var inMemory = (function todo(todopara) {
+
+	// Private Member
+	var memory; //array of geotags
+
+    var searchByRadius = function(lat, lon, rad) {
+        var dx = x - lat0;
+		var dy = y - lon0;
+		if (dx * dx + dy * dy < Math.pow(rad, 2)) {
+		// point (x, y) is inside the circle centered (x0, y0) with radius r
+		}
+        return TODO;
+    };
+
+    var searchByTerm = function(term) {
+		var resultsArr = new Array();
+		term = term.toLowerCase().trim();
+		//TODO get geoTagName from Memory for the loop
+		for (tagName of memory) {
+			if(tagName.toLowerCase().includes(term)){
+			resultsArr.push(tagName);
+			}
+		}
+
+        return resultsArr;
+    };
+
+	var addTag = function(geoTagName) {
+        //TODO
+        return TODO;
+    };
+
+	var deleteTag = function(geoTagName) {
+        //TODO
+        return TODO;
+    };
+
+	return {
+        // Public Member
+
+    }; // ... Ende öffentlicher Teil
+})(TODO);
+ */
 
 /**
  * Route mit Pfad '/' für HTTP 'GET' Requests.
