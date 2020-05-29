@@ -36,7 +36,12 @@ app.set('view engine', 'ejs');
  * GeoTag Objekte sollen min. alle Felder des 'tag-form' Formulars aufnehmen.
  */
 
-// TODO: CODE ERGÄNZEN
+function GeoTag(name, latitute, longitude, hashtag) {
+    this.name = name;
+    this.latitute = latitute;
+    this.longitude = longitude;
+    this.hashtag = hashtag;
+}
 
 /**
  * Modul für 'In-Memory'-Speicherung von GeoTags mit folgenden Komponenten:
@@ -47,7 +52,35 @@ app.set('view engine', 'ejs');
  * - Funktion zum Löschen eines Geo Tags.
  */
 
-// TODO: CODE ERGÄNZEN
+exports.gtManager = function () {
+    let gtList = [];
+
+    function searchByCoords(lat, long, r) {
+        return gtList.map(function (gt) {
+            d_lat = gt.latitute - lat;
+            d_long = gt.longitude - long;
+            if (d_lat * d_lat + d_long * d_long < r * r) {
+                return gt;
+            } else {
+                return null;
+            }
+        });
+    }
+
+    function searchByName(name) {
+        return gtList[gtList.indexOf(name)];
+    }
+
+    function add(newGt) {
+        gtList.push(newGt);
+    }
+
+    function remove(gtToRemove) {
+        if(gtList.indexOf(gtToRemove)){
+            gtList.splice(gtList.indexOf(gtToRemove),1);
+        }
+    }
+}
 
 /**
  * Route mit Pfad '/' für HTTP 'GET' Requests.
@@ -58,7 +91,7 @@ app.set('view engine', 'ejs');
  * Als Response wird das ejs-Template ohne Geo Tag Objekte gerendert.
  */
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
     res.render('gta', {
         taglist: []
     });
