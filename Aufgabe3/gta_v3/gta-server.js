@@ -29,14 +29,19 @@ app.set('view engine', 'ejs');
  * Teste das Ergebnis im Browser unter 'http://localhost:3000/'.
  */
 
-// TODO: CODE ERGÄNZEN
+app.use("/", express.static("public"));
 
 /**
  * Konstruktor für GeoTag Objekte.
  * GeoTag Objekte sollen min. alle Felder des 'tag-form' Formulars aufnehmen.
  */
 
-// TODO: CODE ERGÄNZEN
+function GeoTagObj (name, latitude, longitude, hashtag){
+    this.name = name;
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.hashtag = hashtag;
+}
 
 /**
  * Modul für 'In-Memory'-Speicherung von GeoTags mit folgenden Komponenten:
@@ -48,6 +53,23 @@ app.set('view engine', 'ejs');
  */
 
 // TODO: CODE ERGÄNZEN
+//var inMemory (){
+//    var searchByRadius = function(latitude, longitude, radius){
+//
+//    }
+//
+//    var searchByTerm = function(hashtag){
+//
+//    }
+//
+//   var createTag = function(name, latitude, longitude, hashtag){
+//
+//    }
+//
+//    var deleteTag = function(name){
+//
+//    }
+//}
 
 /**
  * Route mit Pfad '/' für HTTP 'GET' Requests.
@@ -78,6 +100,16 @@ app.get('/', function(req, res) {
  */
 
 // TODO: CODE ERGÄNZEN START
+app.post('/tagging', function(req, res) {
+    var tag = new GeoTagObj;
+    tag.name = req.body.name;
+    tag.latitude = req.body.latitude;
+    tag.longitude = req.body.longitude;
+    tag.hashtag = req.body.hashtag;
+    res.render('gta', {
+        taglist: [tag]
+    });
+});
 
 /**
  * Route mit Pfad '/discovery' für HTTP 'POST' Requests.
@@ -92,6 +124,13 @@ app.get('/', function(req, res) {
  */
 
 // TODO: CODE ERGÄNZEN
+post('/discovery', function(req, res) {
+    console.log(req.body)
+    res.json(req.body)
+    res.render('gta', {
+        taglist: []
+    });
+});
 
 /**
  * Setze Port und speichere in Express.
