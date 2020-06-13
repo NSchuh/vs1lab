@@ -56,7 +56,7 @@ var TagsManager = (function TagsManager() {
     let taglist = []; // Array of all Tags
 
 
-    let searchByRadius = function (center, r) {
+    let searchByRadius = function (center, r = 0.25) {
         let results = [];
 
         for (let i = 0; i < taglist.length; i++) {
@@ -71,10 +71,11 @@ var TagsManager = (function TagsManager() {
 
     let searchByName = function (name) {
         let results = [];
-        name = name.toLowerCase();
+        name = name.toLowerCase().trim();
 
         for (let i = 0; i < taglist.length; i++) {
-            if (taglist[i].name.toLowerCase() === name || taglist[i].hashtag.toLowerCase() === name) {
+            if (taglist[i].name.toLowerCase().includes(name) ||
+                taglist[i].hashtag.toLowerCase().includes(name)) {
                 results.push(taglist[i]);
             }
         }
@@ -92,10 +93,7 @@ var TagsManager = (function TagsManager() {
         }
     };
 
-    publicMember = {
-        taglist, add, searchByName, searchByRadius, remove
-    }
-    return publicMember;
+    return {taglist, add, searchByName, searchByRadius, remove};
 })();
 /**
  * Route mit Pfad '/' für HTTP 'GET' Requests.
@@ -131,7 +129,7 @@ app.post('/tagging', function (req, res) {
     TagsManager.add(newTag);
 
     res.render('gta', {
-        taglist : TagsManager.taglist
+        taglist: TagsManager.taglist
     });
 });
 
@@ -150,10 +148,21 @@ app.post('/tagging', function (req, res) {
 
 app.post('/discovery', function (req, res) {
 
-    let newTag = new GeoTagObj(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag);
-
+    let results;
+    if (req.body.term !== "") {
+        // Search by Term
+        results = TagsManager.searchByName(req.body.term);
+        console.log("Search by Term")
+    } else {
+        // Search by Radius
+        results = TagsManager.searchByRadius(obj = {
+            latitude: req.body.lat,
+            longitude: req.body.lon
+        });
+        console.log("Search by Radius")
+    }
     res.render('gta', {
-        taglist: []
+        taglist: results
     });
 });
 
