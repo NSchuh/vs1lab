@@ -109,8 +109,8 @@ app.get('/', function (req, res) {
     let currentCoords = {};
     if (req.body.latitude === undefined ||
         req.body.longitude === undefined){
-        currentCoords.latitude = null   //req.body.latitude;
-        currentCoords.longitude = null  // req.body.longitude;
+        currentCoords.latitude = null
+        currentCoords.longitude = null
     } else {
         currentCoords.latitude =req.body.latitude;
         currentCoords.longitude =req.body.longitude;
@@ -144,8 +144,8 @@ app.post('/tagging', function (req, res) {
     let currentCoords = {};
     if (req.body.latitude === undefined ||
         req.body.longitude === undefined){
-        currentCoords.latitude = null   //req.body.latitude;
-        currentCoords.longitude = null  // req.body.longitude;
+        currentCoords.latitude = null
+        currentCoords.longitude = null
     } else {
         currentCoords.latitude =req.body.latitude;
         currentCoords.longitude =req.body.longitude;
@@ -175,22 +175,20 @@ app.post('/discovery', function (req, res) {
     if (req.body.term !== "") {
         // Search by Term
         results = TagsManager.searchByName(req.body.term);
-        console.log("Search by Term")
     } else {
         // Search by Radius
         results = TagsManager.searchByRadius(obj = {
             latitude: req.body.lat,
             longitude: req.body.lon
         });
-        console.log("Search by Radius")
     }
 
 
     let currentCoords = {};
     if (req.body.lat === undefined ||
         req.body.lon === undefined){
-        currentCoords.latitude = null   //req.body.latitude;
-        currentCoords.longitude = null  // req.body.longitude;
+        currentCoords.latitude = null
+        currentCoords.longitude = null
     } else {
         currentCoords.latitude =req.body.lat;
         currentCoords.longitude =req.body.lon;
