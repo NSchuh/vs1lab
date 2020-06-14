@@ -28,15 +28,19 @@ app.set('view engine', 'ejs');
  * Konfiguriere den Pfad für statische Dateien.
  * Teste das Ergebnis im Browser unter 'http://localhost:3000/'.
  */
-
-// TODO: CODE ERGÄNZEN
+app.use("/", express.static("public"));
 
 /**
  * Konstruktor für GeoTag Objekte.
  * GeoTag Objekte sollen min. alle Felder des 'tag-form' Formulars aufnehmen.
  */
 
-// TODO: CODE ERGÄNZEN
+function GeoTagObj(name, latitude, longitude, hash) {
+    this.name = name;
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.hashtag = hash;
+}
 
 /**
  * Modul für 'In-Memory'-Speicherung von GeoTags mit folgenden Komponenten:
@@ -47,8 +51,50 @@ app.set('view engine', 'ejs');
  * - Funktion zum Löschen eines Geo Tags.
  */
 
-// TODO: CODE ERGÄNZEN
+var TagsManager = (function TagsManager() {
 
+    let taglist = []; // Array of all Tags
+
+
+    let searchByRadius = function (center, r = 0.25) {
+        let results = [];
+
+        for (let i = 0; i < taglist.length; i++) {
+            let dx = taglist[i].latitude - center.latitude;
+            let dy = taglist[i].longitude - center.longitude;
+            if (dx * dx + dy * dy < r * r) {
+                results.push(taglist[i]);
+            }
+        }
+        return results;
+    };
+
+    let searchByName = function (name) {
+        let results = [];
+        name = name.toLowerCase().trim();
+
+        for (let i = 0; i < taglist.length; i++) {
+            if (taglist[i].name.toLowerCase().includes(name) ||
+                taglist[i].hashtag.toLowerCase().includes(name)) {
+                results.push(taglist[i]);
+            }
+        }
+        return results;
+    };
+
+    let add = function (tag) {
+        taglist.push(tag);
+    };
+
+    let remove = function (tagToRemove) {
+        let index = taglist.indexOf(tagToRemove);
+        if (index > -1) {
+            taglist.splice(index, 1);
+        }
+    };
+
+    return {taglist, add, searchByName, searchByRadius, remove};
+})();
 /**
  * Route mit Pfad '/' für HTTP 'GET' Requests.
  * (http://expressjs.com/de/4x/api.html#app.get.method)
@@ -58,9 +104,21 @@ app.set('view engine', 'ejs');
  * Als Response wird das ejs-Template ohne Geo Tag Objekte gerendert.
  */
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
+
+    let currentCoords = {};
+    if (req.body.latitude === undefined ||
+        req.body.longitude === undefined){
+        currentCoords.latitude = null
+        currentCoords.longitude = null
+    } else {
+        currentCoords.latitude =req.body.latitude;
+        currentCoords.longitude =req.body.longitude;
+    }
+
     res.render('gta', {
-        taglist: []
+        taglist: TagsManager.taglist,
+        coords: currentCoords
     });
 });
 
@@ -77,7 +135,27 @@ app.get('/', function(req, res) {
  * Die Objekte liegen in einem Standard Radius um die Koordinate (lat, lon).
  */
 
-// TODO: CODE ERGÄNZEN START
+app.post('/tagging', function (req, res) {
+
+    let newTag = new GeoTagObj(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag);
+    TagsManager.add(newTag);
+
+
+    let currentCoords = {};
+    if (req.body.latitude === undefined ||
+        req.body.longitude === undefined){
+        currentCoords.latitude = null
+        currentCoords.longitude = null
+    } else {
+        currentCoords.latitude =req.body.latitude;
+        currentCoords.longitude =req.body.longitude;
+    }
+    res.render('gta', {
+        taglist: TagsManager.taglist,
+        coords: currentCoords
+    });
+});
+
 
 /**
  * Route mit Pfad '/discovery' für HTTP 'POST' Requests.
@@ -91,7 +169,35 @@ app.get('/', function(req, res) {
  * Falls 'term' vorhanden ist, wird nach Suchwort gefiltert.
  */
 
-// TODO: CODE ERGÄNZEN
+app.post('/discovery', function (req, res) {
+
+    let results;
+    if (req.body.term !== "") {
+        // Search by Term
+        results = TagsManager.searchByName(req.body.term);
+    } else {
+        // Search by Radius
+        results = TagsManager.searchByRadius(obj = {
+            latitude: req.body.lat,
+            longitude: req.body.lon
+        });
+    }
+
+
+    let currentCoords = {};
+    if (req.body.lat === undefined ||
+        req.body.lon === undefined){
+        currentCoords.latitude = null
+        currentCoords.longitude = null
+    } else {
+        currentCoords.latitude =req.body.lat;
+        currentCoords.longitude =req.body.lon;
+    }
+    res.render('gta', {
+        taglist: results,
+        coords: currentCoords
+    });
+});
 
 /**
  * Setze Port und speichere in Express.
