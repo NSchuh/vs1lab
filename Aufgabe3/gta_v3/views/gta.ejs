@@ -32,8 +32,8 @@
 				<fieldset>
 					<legend>New GeoTag</legend>
 					<label for="locationTag">Name:</label>              <input name="name" type="text" id="locationTag" placeholder="Atlantis" required maxlength="10" pattern="[a-zA-Z]+"/>
-					<label for="latitudeTag">Latitude:</label>          <input name="latitude" type="number" step="any" id="latitudeTag" required placeholder="42"/>
-					<label for="longitudeTag">Longitude:</label>        <input name="longitude" type="number" step="any" id="longitudeTag" required placeholder="42"/>
+					<label for="latitudeTag">Latitude:</label>          <input name="latitude" value="<%=coords.latitude%>" type="number" step="any" id="latitudeTag" required placeholder="42"/>
+					<label for="longitudeTag">Longitude:</label>        <input name="longitude" value="<%=coords.longitude%>" type="number" step="any" id="longitudeTag" required placeholder="42"/>
 					<label for="hashtag">Hashtag:</label>               <input name="hashtag" type="text" id="hashtag" maxlength="11" placeholder="#sunken" pattern="#[a-zA-Z]+"/>
 					<input id="submit1" type="submit" value="submit"/>
 				</fieldset>
@@ -52,8 +52,8 @@
 					<legend>Filter by Searchterm</legend>
 					<label for="searchDisc"></label>
 					<input name="term" type="text" id="searchDisc" placeholder="search term"/>
-					<input name="lat" type="hidden" id="latitudeDisc"/>
-					<input name="lon" type="hidden" id="longitudeDisc"/>
+					<input name="lat" value="<%=coords.latitude%>" type="hidden" id="latitudeDisc"/>
+					<input name="lon" value="<%=coords.longitude%>" type="hidden" id="longitudeDisc"/>
 					<input type="submit" value="Search"/>
 				</fieldset>
 			</form>
@@ -85,10 +85,5 @@
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script src="./javascripts/geotagging.js"></script>
-
 	</body>
 	</html>
-
-
-
-

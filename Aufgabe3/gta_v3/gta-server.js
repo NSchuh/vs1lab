@@ -105,8 +105,20 @@ var TagsManager = (function TagsManager() {
  */
 
 app.get('/', function (req, res) {
+
+    let currentCoords = {};
+    if (req.body.latitude === undefined ||
+        req.body.longitude === undefined){
+        currentCoords.latitude = null   //req.body.latitude;
+        currentCoords.longitude = null  // req.body.longitude;
+    } else {
+        currentCoords.latitude =req.body.latitude;
+        currentCoords.longitude =req.body.longitude;
+    }
+
     res.render('gta', {
-        taglist: TagsManager.taglist
+        taglist: TagsManager.taglist,
+        coords: currentCoords
     });
 });
 
@@ -128,8 +140,19 @@ app.post('/tagging', function (req, res) {
     let newTag = new GeoTagObj(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag);
     TagsManager.add(newTag);
 
+
+    let currentCoords = {};
+    if (req.body.latitude === undefined ||
+        req.body.longitude === undefined){
+        currentCoords.latitude = null   //req.body.latitude;
+        currentCoords.longitude = null  // req.body.longitude;
+    } else {
+        currentCoords.latitude =req.body.latitude;
+        currentCoords.longitude =req.body.longitude;
+    }
     res.render('gta', {
-        taglist: TagsManager.taglist
+        taglist: TagsManager.taglist,
+        coords: currentCoords
     });
 });
 
@@ -161,8 +184,20 @@ app.post('/discovery', function (req, res) {
         });
         console.log("Search by Radius")
     }
+
+
+    let currentCoords = {};
+    if (req.body.lat === undefined ||
+        req.body.lon === undefined){
+        currentCoords.latitude = null   //req.body.latitude;
+        currentCoords.longitude = null  // req.body.longitude;
+    } else {
+        currentCoords.latitude =req.body.lat;
+        currentCoords.longitude =req.body.lon;
+    }
     res.render('gta', {
-        taglist: results
+        taglist: results,
+        coords: currentCoords
     });
 });
 
